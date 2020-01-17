@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/splashscreen"
+        android:layout_width="92dp"
+        android:layout_height="94dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="280sp"
+        android:src="@mipmap/bell" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="200sp"
+        android:text="ProMemory"></TextView>
+
+</LinearLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/activity_main"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <ListView
+            android:id="@+id/listReminders"
+            android:layout_width="match_parent"
+            android:layout_height="440dp" />
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/switchFavourite"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:paddingTop="100sp"
+        android:paddingLeft="15dp"
+        android:text="Show favourites"></Switch>
+</LinearLayout>
