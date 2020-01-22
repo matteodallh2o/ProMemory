@@ -26,10 +26,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TEXT = "text";
     private static final String KEY_DEADLINE = "deadline";
+    private static final String KEY_HOUR = "hour";
     private static final String KEY_CREATEDON = "createdOn";
     private static final String KEY_FAVOURITE = "favourite";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_TEXT, KEY_DEADLINE, KEY_CREATEDON, KEY_FAVOURITE};
+    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_TEXT, KEY_DEADLINE, KEY_HOUR, KEY_CREATEDON, KEY_FAVOURITE};
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,6 +44,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
                 "title TEXT, "+
                 "text TEXT," +
                 "deadline TEXT," +
+                "hour TEXT," +
                 "createdOn TEXT," +
                 "favourite INTEGER)";
 
@@ -70,9 +72,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, reminder.getTitle()); // get title
         values.put(KEY_TEXT, reminder.getText()); // get text
-        values.put(KEY_DEADLINE, reminder.getDeadline()); // get text
-        values.put(KEY_CREATEDON, reminder.getCreatedOn()); // get text
-        values.put(KEY_FAVOURITE, reminder.getFavourite()); // get text
+        values.put(KEY_DEADLINE, reminder.getDeadline()); // get deadline
+        values.put(KEY_HOUR, reminder.getHour()); // get hour
+        values.put(KEY_CREATEDON, reminder.getCreatedOn()); // get created on
+        values.put(KEY_FAVOURITE, reminder.getFavourite()); // get favourite flag
 
         // 3. insert
         db.insert(TABLE_REMINDERS, // table
@@ -109,8 +112,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         reminder.setTitle(cursor.getString(1));
         reminder.setText(cursor.getString(2));
         reminder.setDeadline(cursor.getString(3));
-        reminder.setCreatedOn(cursor.getString(4));
-        reminder.setFavourite(Integer.parseInt(cursor.getString(5)));
+        reminder.setHour(cursor.getString(4));
+        reminder.setCreatedOn(cursor.getString(5));
+        reminder.setFavourite(Integer.parseInt(cursor.getString(6)));
 
         //log
         Log.d("getReminder("+id+")", reminder.toString());
@@ -138,8 +142,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
                 reminder.setTitle(cursor.getString(1));
                 reminder.setText(cursor.getString(2));
                 reminder.setDeadline(cursor.getString(3));
-                reminder.setCreatedOn(cursor.getString(4));
-                reminder.setFavourite(Integer.parseInt(cursor.getString(5)));
+                reminder.setHour(cursor.getString(4));
+                reminder.setCreatedOn(cursor.getString(5));
+                reminder.setFavourite(Integer.parseInt(cursor.getString(6)));
 
                 // Add reminder to reminders
                 reminders.add(reminder);
@@ -161,9 +166,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         ContentValues values = new ContentValues();
         values.put("title", reminder.getTitle()); // get title
         values.put("text", reminder.getText()); // get text
-        values.put("deadline", reminder.getDeadline()); // get text
-        values.put("createdOn", reminder.getCreatedOn()); // get text
-        values.put("favourite", reminder.getFavourite()); // get text
+        values.put("deadline", reminder.getDeadline()); // get deadline
+        values.put("hour", reminder.getHour()); // get hour
+        values.put("createdOn", reminder.getCreatedOn()); // get created on
+        values.put("favourite", reminder.getFavourite()); // get favourite flag
 
         // 3. updating row
         int i = db.update(TABLE_REMINDERS, //table

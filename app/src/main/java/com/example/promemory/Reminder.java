@@ -10,18 +10,20 @@ public class Reminder { //class for the reminders
     private String title;       //title of the reminder
     private String text;        //description of the reminder
     private String deadline;    //deadline for the notification
+    private String hour;
     private String createdOn;   //date of the creation
     private int favourite;      //flag for the management of favourite reminders
 
     //constructors
     public Reminder(){}
-    public Reminder(String titolo, String testo, String scadenza, int preferito) {
+    public Reminder(String titolo, String testo, String scadenza, String ora, int preferito) {
         super();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         this.title = titolo;
         this.text = testo;
         this.deadline = scadenza;
+        this.hour = ora;
         this.createdOn = dateFormat.format((date));
         this.favourite = preferito;
     }
@@ -38,6 +40,9 @@ public class Reminder { //class for the reminders
     }
     public String getDeadline() {
         return deadline;
+    }
+    public String getHour() {
+        return hour;
     }
     public String getCreatedOn() {
         return createdOn;
@@ -58,6 +63,7 @@ public class Reminder { //class for the reminders
     public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
+    public void setHour(String hour) { this.hour = hour; }
     public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
     }
@@ -72,6 +78,7 @@ public class Reminder { //class for the reminders
                 ", title='" + title + '\'' +
                 ", text='" + text + '\'' +
                 ", deadline='" + deadline + '\'' +
+                ", hour='" + hour + '\'' +
                 ", createdOn='" + createdOn + '\'' +
                 ", favourite=" + favourite +
                 '}';

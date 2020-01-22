@@ -1,7 +1,9 @@
 package com.example.promemory;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -21,11 +24,16 @@ public class ModifyActivity extends AppCompatActivity {
 
     static MySQLiteHelper database;     //shared database
     static long dateChange = 0;             //variable that saves the new date in a calendar view
+    static String DeadlineHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
+        Toolbar reminder = findViewById(R.id.reminderToolbar);
+        setSupportActionBar(reminder);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent i = getIntent();             //getting the intent that launched this activity
 
@@ -61,6 +69,37 @@ public class ModifyActivity extends AppCompatActivity {
             }
         });
 
+        Button time = findViewById(R.id.btnHour);
+        time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour;
+                int minute;
+                //int minute = mcurrentTime.get(Calendar.MINUTE);
+                //int hour = database.getReminder(id).getHour().substring(0, );
+                String time = database.getReminder(id).getHour();
+                if(time.charAt(1) == ':') {
+
+                    hour = Integer.parseInt(time.substring(0, 1));
+                    minute = Integer.parseInt(time.substring(2, 4));
+                }
+                else{
+                    hour = Integer.parseInt(time.substring(0, 2));
+                    minute = Integer.parseInt(time.substring(3, 5));
+                }
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(ModifyActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        DeadlineHour = selectedHour + ":" + selectedMinute;
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
         Button modify = findViewById(R.id.btnModify);                   //button that sends the changes to the database
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +119,7 @@ public class ModifyActivity extends AppCompatActivity {
                 newReminder.setTitle(title);
                 newReminder.setText(text);
                 newReminder.setDeadline(deadline);
+                newReminder.setHour(DeadlineHour);
                 newReminder.setFavourite(favourite);
 
                 database.updateReminder(newReminder);   //updates the reminder in the database
@@ -91,5 +131,11 @@ public class ModifyActivity extends AppCompatActivity {
 
     public static void setDatabase(MySQLiteHelper db){      //this function allows you to share a database between two activities
         database = db;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
     }
 }

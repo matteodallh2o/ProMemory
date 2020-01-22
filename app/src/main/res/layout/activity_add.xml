@@ -5,14 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingRight="10sp"
-    android:paddingLeft="15sp">
+>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/reminderToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="@string/add">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="50sp">
+        android:paddingTop="40sp"
+        android:paddingRight="10sp"
+        android:paddingLeft="15sp">
 
         <TextView
             android:id="@+id/textView"
@@ -33,7 +51,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingRight="10sp"
+        android:paddingLeft="15sp">
 
         <TextView
             android:id="@+id/textView2"
@@ -54,7 +74,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingRight="10sp"
+        android:paddingLeft="15sp">
 
         <TextView
             android:id="@+id/textView3"
@@ -76,7 +98,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="18sp">
+        android:paddingRight="10sp"
+        android:paddingLeft="15sp">
+
+        <TextView
+            android:id="@+id/textViewHour"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:text="Hour" />
+
+        <Button
+            android:id="@+id/btnHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Select hour"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="18sp"
+        android:paddingRight="10sp"
+        android:paddingLeft="15sp">
 
         <TextView
             android:id="@+id/textView5"

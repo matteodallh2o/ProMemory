@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ProMemory</string>
     <string name="action_settings">Settings</string>
+    <string name="modify">Edit reminder</string>
+    <string name="reminder">Reminder info</string>
+    <string name="add">Add reminder</string>
 </resources>
