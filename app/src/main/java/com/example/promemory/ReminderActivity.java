@@ -22,6 +22,8 @@ public class ReminderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
+
+        //setting the back button
         Toolbar reminder = findViewById(R.id.reminderToolbar);
         setSupportActionBar(reminder);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -39,12 +41,13 @@ public class ReminderActivity extends AppCompatActivity {
         TextView ora = findViewById(R.id.txtHour);
         Switch preferito = findViewById(R.id.switchFavourite);
 
+        //sets the info with the attributes of the selected reminder
         titolo.setText(database.getReminder(id).getTitle());
         testo.setText(database.getReminder(id).getText());
         scadenza.setText(database.getReminder(id).getDeadline());
         ora.setText(database.getReminder(id).getHour());
         creazione.setText(database.getReminder(id).getCreatedOn());
-        if(database.getReminder(id).getFavourite() == 1) preferito.setChecked(true);    //sets the info with the attributes of the selected reminder
+        if(database.getReminder(id).getFavourite() == 1) preferito.setChecked(true);
 
         Button modify = findViewById(R.id.btnModify);       //button that redirects you to the activity for the reminder's editing
         modify.setOnClickListener(new View.OnClickListener() {

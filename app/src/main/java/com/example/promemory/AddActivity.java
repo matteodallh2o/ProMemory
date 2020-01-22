@@ -22,13 +22,15 @@ import java.util.Calendar;
 public class AddActivity extends AppCompatActivity {
 
     static MySQLiteHelper database;     //shared database
-    static long dateChange = 0;             //variable that saves the new date in a calendar view
-    static String DeadlineHour;
+    static long dateChange = 0;         //variable that saves the new date in a calendar view
+    static String DeadlineHour = "";         //variable to set the hour on the timePicker dialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        //setting the back button
         Toolbar reminder = findViewById(R.id.reminderToolbar);
         setSupportActionBar(reminder);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

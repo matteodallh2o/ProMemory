@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,13 +25,15 @@ import java.util.Date;
 public class ModifyActivity extends AppCompatActivity {
 
     static MySQLiteHelper database;     //shared database
-    static long dateChange = 0;             //variable that saves the new date in a calendar view
-    static String DeadlineHour;
+    static long dateChange = 0;         //variable that saves the new date in a calendar view
+    static String DeadlineHour = "";         //variable to set the hour on the timePicker dialog
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
+
+        //setting the back button
         Toolbar reminder = findViewById(R.id.reminderToolbar);
         setSupportActionBar(reminder);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -45,6 +49,7 @@ public class ModifyActivity extends AppCompatActivity {
         final CalendarView scadenza = findViewById(R.id.txtDeadline);
         final Switch preferito = findViewById(R.id.switchFavourite);
 
+        //sets the editable info with the attributes of the selected reminder
         if(!database.getReminder(id).getTitle().equals("")) titolo.setText(database.getReminder(id).getTitle());
         if(!database.getReminder(id).getText().equals("")) testo.setText(database.getReminder(id).getText());
         if(!database.getReminder(id).getDeadline().equals("")){
@@ -57,7 +62,7 @@ public class ModifyActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        if (database.getReminder(id).getFavourite() == 1) preferito.setChecked(true);           //sets the editable info with the attributes of the selected reminder
+        if (database.getReminder(id).getFavourite() == 1) preferito.setChecked(true);
 
         scadenza.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {              //listener that saves the change of the date in the calendar view
             @Override
@@ -73,20 +78,22 @@ public class ModifyActivity extends AppCompatActivity {
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();
                 int hour;
                 int minute;
-                //int minute = mcurrentTime.get(Calendar.MINUTE);
-                //int hour = database.getReminder(id).getHour().substring(0, );
-                String time = database.getReminder(id).getHour();
-                if(time.charAt(1) == ':') {
-
-                    hour = Integer.parseInt(time.substring(0, 1));
-                    minute = Integer.parseInt(time.substring(2, 4));
+                if(database.getReminder(id).getHour().equals("")) {
+                    Calendar mcurrentTime = Calendar.getInstance();
+                    hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                    minute = mcurrentTime.get(Calendar.MINUTE);
                 }
-                else{
-                    hour = Integer.parseInt(time.substring(0, 2));
-                    minute = Integer.parseInt(time.substring(3, 5));
+                else {
+                    String time = database.getReminder(id).getHour();
+                    if (time.charAt(1) == ':') {
+                        hour = Integer.parseInt(time.substring(0, 1));
+                        minute = Integer.parseInt(time.substring(2, 4));
+                    } else {
+                        hour = Integer.parseInt(time.substring(0, 2));
+                        minute = Integer.parseInt(time.substring(3, 5));
+                    }
                 }
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(ModifyActivity.this, new TimePickerDialog.OnTimeSetListener() {
