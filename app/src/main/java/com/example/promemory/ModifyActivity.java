@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -99,7 +100,8 @@ public class ModifyActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ModifyActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        DeadlineHour = selectedHour + ":" + selectedMinute;
+                        if(selectedHour < 10) DeadlineHour = "0" + selectedHour + ":" + selectedMinute;
+                        if(selectedMinute < 10) DeadlineHour = selectedHour + ":0" + selectedMinute;
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -121,12 +123,11 @@ public class ModifyActivity extends AppCompatActivity {
                 int favourite = 0;
                 if(preferito.isChecked())favourite = 1; //if the switch is turned on the reminder will be setted as a favourite
 
-                Date dDate = null;
-                try {
-                    dDate = dateFormat.parse(deadline);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Date current = new Date();
+                String c = dateFormat.format(current);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(current);
+                String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
 
                 if(title.equals("")) {
                     Snackbar.make(findViewById(R.id.modify_layout), "You have to put a title", Snackbar.LENGTH_LONG)
@@ -137,8 +138,18 @@ public class ModifyActivity extends AppCompatActivity {
                             .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
                             .show();
                 }
-                else if(dDate.compareTo(Calendar.getInstance().getTime()) < 0){
+                else if(compareDate(deadline, c) == 0){
                     Snackbar.make(findViewById(R.id.modify_layout), "The expiration date cannot be earlier than the creation date", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+
+                else if (compareDate(deadline, c) == - 1 && compareHour(DeadlineHour, hour) == 0){
+                    Snackbar.make(findViewById(R.id.modify_layout), "You can't travel to the past", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) { }
@@ -171,5 +182,47 @@ public class ModifyActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         onBackPressed();
         return true;
+    }
+
+    private int compareDate(String d1, String d2){
+        String day1 = d1.substring(0,2);
+        String day2 = d2.substring(0,2);
+        String month1 = d1.substring(3,5);
+        String month2 = d2.substring(3,5);
+        String year1 = d1.substring(6,10);
+        String year2 = d2.substring(6,10);
+
+        if(Integer.parseInt(year1) < Integer.parseInt(year2))return 0;
+        else if (Integer.parseInt(month1) < Integer.parseInt(month2)) return 0;
+        else if (Integer.parseInt(day1) < Integer.parseInt(day2)) return 0;
+        else if (Integer.parseInt(year1) == Integer.parseInt(year2) && Integer.parseInt(month1) == Integer.parseInt(month2) && Integer.parseInt(day1) == Integer.parseInt(day2)) return -1;
+        return 1;
+    }
+
+    private int compareHour(String h1, String h2){
+        int hour1;
+        int minute1;
+        int hour2;
+        int minute2;
+
+        if (h1.charAt(1) == ':') {
+            hour1 = Integer.parseInt(h1.substring(0, 1));
+            minute1 = Integer.parseInt(h1.substring(2, 4));
+        } else {
+            hour1 = Integer.parseInt(h1.substring(0, 2));
+            minute1 = Integer.parseInt(h1.substring(3, 5));
+        }
+
+        if (h2.charAt(1) == ':') {
+            hour2 = Integer.parseInt(h2.substring(0, 1));
+            minute2 = Integer.parseInt(h2.substring(2, 4));
+        } else {
+            hour2 = Integer.parseInt(h2.substring(0, 2));
+            minute2 = Integer.parseInt(h2.substring(3, 5));
+        }
+
+        if(hour1 < hour2) return 0;
+        else if(minute1 <= minute2) return 0;
+        return 1;
     }
 }
