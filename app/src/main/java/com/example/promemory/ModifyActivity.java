@@ -121,17 +121,44 @@ public class ModifyActivity extends AppCompatActivity {
                 int favourite = 0;
                 if(preferito.isChecked())favourite = 1; //if the switch is turned on the reminder will be setted as a favourite
 
-                //changing the attributes of the selected reminder
-                Reminder newReminder = database.getReminder(id);
-                newReminder.setTitle(title);
-                newReminder.setText(text);
-                newReminder.setDeadline(deadline);
-                newReminder.setHour(DeadlineHour);
-                newReminder.setFavourite(favourite);
+                Date dDate = null;
+                try {
+                    dDate = dateFormat.parse(deadline);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                database.updateReminder(newReminder);   //updates the reminder in the database
-                MainActivity.updateList();              //notfies the changes to the list
-                finish();                               //closing this activity
+                if(title.equals("")) {
+                    Snackbar.make(findViewById(R.id.modify_layout), "You have to put a title", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+                else if(dDate.compareTo(Calendar.getInstance().getTime()) < 0){
+                    Snackbar.make(findViewById(R.id.modify_layout), "The expiration date cannot be earlier than the creation date", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+                else {
+                    //changing the attributes of the selected reminder
+                    Reminder newReminder = database.getReminder(id);
+                    newReminder.setTitle(title);
+                    newReminder.setText(text);
+                    newReminder.setDeadline(deadline);
+                    newReminder.setHour(DeadlineHour);
+                    newReminder.setFavourite(favourite);
+
+                    database.updateReminder(newReminder);   //updates the reminder in the database
+                    MainActivity.updateList();              //notifies the changes to the list
+                    finish();                               //closing this activity
+                }
             }
         });
     }

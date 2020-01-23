@@ -1,5 +1,6 @@
 package com.example.promemory;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     static Switch showFavourites;                       //switch that shows only favourite reminders
     static boolean show;                                //bool for the management of the favourite reminders at the start
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //startActivity(new Intent(MainActivity.this, SplashActivity.class));

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/backgroundColor"
    >
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,7 +19,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/reminder">
+            app:title="@string/reminder"
+            android:backgroundTint="@color/mainColor">
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -36,7 +38,8 @@
             android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Title" />
+            android:text="Title"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -58,7 +61,8 @@
             android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Text" />
+            android:text="Text"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtText"
@@ -80,7 +84,8 @@
             android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Deadline" />
+            android:text="Deadline"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtDeadline"
@@ -102,7 +107,8 @@
             android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Hour" />
+            android:text="Hour"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtHour"
@@ -124,7 +130,8 @@
             android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Created on" />
+            android:text="Created on"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtCreatedOn"
@@ -143,9 +150,10 @@
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="194dp"
+            android:layout_width="187dp"
             android:layout_height="wrap_content"
-            android:text="Favourite" />
+            android:text="Favourite"
+            android:textStyle="bold" />
 
         <Switch
             android:id="@+id/switchFavourite"
@@ -156,12 +164,13 @@
             android:gravity="start"
             android:text="" />
     </LinearLayout>
+
     <Button
         android:id="@+id/btnModify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50sp"
-        android:text="Modify"
         android:layout_gravity="center"
-        />
+        android:layout_marginTop="50sp"
+        android:backgroundTint="#BDC9BD"
+        android:text="Modify" />
 </LinearLayout>

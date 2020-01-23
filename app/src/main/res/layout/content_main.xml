@@ -4,21 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main"
-    android:orientation="vertical">
+    tools:showIn="@layout/activity_main">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <ListView
             android:id="@+id/listReminders"
             android:layout_width="match_parent"
-            android:layout_height="440dp" />
+            android:layout_height="440dp"
+            android:theme="@style/appTheme" />
     </LinearLayout>
 
     <Switch
@@ -26,7 +27,10 @@
         android:layout_width="184dp"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:paddingTop="100sp"
         android:paddingLeft="15dp"
-        android:text="Show favourites"></Switch>
+        android:paddingTop="100sp"
+        android:text="Show favourites"
+        android:textAlignment="inherit"
+        android:textColorLink="@color/fragmentColor"
+        android:textStyle="bold"></Switch>
 </LinearLayout>

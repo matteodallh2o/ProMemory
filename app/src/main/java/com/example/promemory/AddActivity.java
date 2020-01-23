@@ -14,9 +14,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TimePicker;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 
 //activity for the addiition of a reminder
 public class AddActivity extends AppCompatActivity {
@@ -79,6 +84,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //taking the info of the new reminder
+
                 String title = titolo.getText().toString();
                 String text = testo.getText().toString();
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -87,9 +93,39 @@ public class AddActivity extends AppCompatActivity {
                 int favourite = 0;
                 if(preferito.isChecked())favourite = 1;     //if the switch is turned on the reminder will be setted as a favourite
 
-                database.addReminder(new Reminder(title, text, deadline, DeadlineHour, favourite));       //adding the new reminder to the database
-                MainActivity.updateList();                                                  //notfies the changes to the list
-                finish();                                                                   //closing this activity
+
+                Date dDate = null;
+                Date current = new Date();
+                try {
+                    dDate = dateFormat.parse(deadline);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(current);
+                if(title.equals("")) {
+                    Snackbar.make(findViewById(R.id.add_layout), "You have to put a title", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+
+                else if(dDate.compareTo(current) < 0){
+                    Snackbar.make(findViewById(R.id.add_layout), "The expiration date cannot be earlier than the creation date", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+                else {
+                    database.addReminder(new Reminder(title, text, deadline, DeadlineHour, favourite));       //adding the new reminder to the database
+                    MainActivity.updateList();                                                  //notifies the changes to the list
+                    finish();                                                                   //closing this activity
+                }
             }
         });
     }
