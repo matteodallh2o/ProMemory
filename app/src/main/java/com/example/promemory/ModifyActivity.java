@@ -100,8 +100,10 @@ public class ModifyActivity extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(ModifyActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        if(selectedHour < 10) DeadlineHour = "0" + selectedHour + ":" + selectedMinute;
-                        if(selectedMinute < 10) DeadlineHour = selectedHour + ":0" + selectedMinute;
+                        if(selectedHour < 10 && selectedMinute >= 10) DeadlineHour = "0" + selectedHour + ":" + selectedMinute;
+                        else if(selectedMinute < 10 && selectedHour >= 10) DeadlineHour = selectedHour + ":0" + selectedMinute;
+                        else if(selectedHour < 10 && selectedMinute < 10) DeadlineHour = "0" + selectedHour + ":0" + selectedMinute;
+                        else DeadlineHour = selectedHour + ":" + selectedMinute;
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -148,7 +150,17 @@ public class ModifyActivity extends AppCompatActivity {
                             .show();
                 }
 
-                else if (compareDate(deadline, c) == - 1 && compareHour(DeadlineHour, hour) == 0){
+                else if(DeadlineHour.equals("")){
+                    Snackbar.make(findViewById(R.id.add_layout), "You have to put an hour", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+
+                else if (compareDate(deadline, c) == -1 && compareHour(DeadlineHour, hour) == 0){
                     Snackbar.make(findViewById(R.id.modify_layout), "You can't travel to the past", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
@@ -205,21 +217,12 @@ public class ModifyActivity extends AppCompatActivity {
         int hour2;
         int minute2;
 
-        if (h1.charAt(1) == ':') {
-            hour1 = Integer.parseInt(h1.substring(0, 1));
-            minute1 = Integer.parseInt(h1.substring(2, 4));
-        } else {
-            hour1 = Integer.parseInt(h1.substring(0, 2));
-            minute1 = Integer.parseInt(h1.substring(3, 5));
-        }
+        hour1 = Integer.parseInt(h1.substring(0, 2));
+        minute1 = Integer.parseInt(h1.substring(3, 5));
 
-        if (h2.charAt(1) == ':') {
-            hour2 = Integer.parseInt(h2.substring(0, 1));
-            minute2 = Integer.parseInt(h2.substring(2, 4));
-        } else {
-            hour2 = Integer.parseInt(h2.substring(0, 2));
-            minute2 = Integer.parseInt(h2.substring(3, 5));
-        }
+        hour2 = Integer.parseInt(h2.substring(0, 2));
+        minute2 = Integer.parseInt(h2.substring(3, 5));
+
 
         if(hour1 < hour2) return 0;
         else if(minute1 <= minute2) return 0;
