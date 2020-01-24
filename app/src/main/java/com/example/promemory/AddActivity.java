@@ -164,7 +164,7 @@ public class AddActivity extends AppCompatActivity {
         return true;
     }
 
-    private int compareDate(String d1, String d2){
+    public static int compareDate(String d1, String d2){
         String day1 = d1.substring(0,2);
         String day2 = d2.substring(0,2);
         String month1 = d1.substring(3,5);
@@ -179,7 +179,7 @@ public class AddActivity extends AppCompatActivity {
         return 1;
     }
 
-    private int compareHour(String h1, String h2){
+    public static int compareHour(String h1, String h2){
         int hour1;
         int minute1;
         int hour2;
@@ -188,7 +188,12 @@ public class AddActivity extends AppCompatActivity {
         if (h1.charAt(1) == ':') {
             hour1 = Integer.parseInt(h1.substring(0, 1));
             minute1 = Integer.parseInt(h1.substring(2, 4));
-        } else {
+        }
+        if(h1.charAt(2) == ':' && h1.length() == 4){
+            hour1 = Integer.parseInt(h1.substring(0, 2));
+            minute1 = Integer.parseInt(h1.substring(3,4));
+        }
+        else {
             hour1 = Integer.parseInt(h1.substring(0, 2));
             minute1 = Integer.parseInt(h1.substring(3, 5));
         }
@@ -196,13 +201,19 @@ public class AddActivity extends AppCompatActivity {
         if (h2.charAt(1) == ':') {
             hour2 = Integer.parseInt(h2.substring(0, 1));
             minute2 = Integer.parseInt(h2.substring(2, 4));
-        } else {
+        }
+        if(h2.charAt(2) == ':' && h2.length() == 4){
+            hour2 = Integer.parseInt(h2.substring(0, 2));
+            minute2 = Integer.parseInt(h2.substring(3,4));
+        }
+        else {
             hour2 = Integer.parseInt(h2.substring(0, 2));
             minute2 = Integer.parseInt(h2.substring(3, 5));
         }
 
         if(hour1 < hour2) return 0;
-        else if(minute1 <= minute2) return 0;
+        else if(hour1 == hour2 && minute1 <= minute2) return 0;
+        else if(hour1 == hour2 && minute1 == minute2) return -1;
         return 1;
     }
 }

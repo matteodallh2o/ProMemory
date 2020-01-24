@@ -140,7 +140,7 @@ public class ModifyActivity extends AppCompatActivity {
                             .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
                             .show();
                 }
-                else if(compareDate(deadline, c) == 0){
+                else if(AddActivity.compareDate(deadline, c) == 0){
                     Snackbar.make(findViewById(R.id.modify_layout), "The expiration date cannot be earlier than the creation date", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
@@ -151,7 +151,7 @@ public class ModifyActivity extends AppCompatActivity {
                 }
 
                 else if(DeadlineHour.equals("")){
-                    Snackbar.make(findViewById(R.id.add_layout), "You have to put an hour", Snackbar.LENGTH_LONG)
+                    Snackbar.make(findViewById(R.id.modify_layout), "You have to put an hour", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) { }
@@ -160,7 +160,7 @@ public class ModifyActivity extends AppCompatActivity {
                             .show();
                 }
 
-                else if (compareDate(deadline, c) == -1 && compareHour(DeadlineHour, hour) == 0){
+                else if (AddActivity.compareDate(deadline, c) == -1 && AddActivity.compareHour(DeadlineHour, hour) == 0){
                     Snackbar.make(findViewById(R.id.modify_layout), "You can't travel to the past", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
                                 @Override
@@ -196,36 +196,4 @@ public class ModifyActivity extends AppCompatActivity {
         return true;
     }
 
-    private int compareDate(String d1, String d2){
-        String day1 = d1.substring(0,2);
-        String day2 = d2.substring(0,2);
-        String month1 = d1.substring(3,5);
-        String month2 = d2.substring(3,5);
-        String year1 = d1.substring(6,10);
-        String year2 = d2.substring(6,10);
-
-        if(Integer.parseInt(year1) < Integer.parseInt(year2))return 0;
-        else if (Integer.parseInt(month1) < Integer.parseInt(month2)) return 0;
-        else if (Integer.parseInt(day1) < Integer.parseInt(day2)) return 0;
-        else if (Integer.parseInt(year1) == Integer.parseInt(year2) && Integer.parseInt(month1) == Integer.parseInt(month2) && Integer.parseInt(day1) == Integer.parseInt(day2)) return -1;
-        return 1;
-    }
-
-    private int compareHour(String h1, String h2){
-        int hour1;
-        int minute1;
-        int hour2;
-        int minute2;
-
-        hour1 = Integer.parseInt(h1.substring(0, 2));
-        minute1 = Integer.parseInt(h1.substring(3, 5));
-
-        hour2 = Integer.parseInt(h2.substring(0, 2));
-        minute2 = Integer.parseInt(h2.substring(3, 5));
-
-
-        if(hour1 < hour2) return 0;
-        else if(minute1 <= minute2) return 0;
-        return 1;
-    }
 }

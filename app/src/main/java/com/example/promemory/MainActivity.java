@@ -23,7 +23,11 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     static List<String> reminders = new ArrayList<>();  //list for the management of the reminders' view
     static MySQLiteHelper db = null;                    //reminders database
     static Switch showFavourites;                       //switch that shows only favourite reminders
+    static Switch showCompleted;
     static boolean show;                                //bool for the management of the favourite reminders at the start
 
     @SuppressLint("ResourceAsColor")
@@ -54,10 +59,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ListView list = (ListView) findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
+        final ListView list = (ListView) findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, reminders);   //setting the adapter
         list.setAdapter(adapter);       //matching the list with the adapter
         showFavourites = findViewById(R.id.switchFavourite);            //matching the switch object with the layout's Switch
+        showCompleted = findViewById(R.id.switchCompleted);
         if(!show) {                                                     //if show is false at the start
             updateList();                                               //shows directly all the reminders
             showFavourites.setChecked(false);                           //sets the switch off
@@ -78,6 +84,15 @@ public class MainActivity extends AppCompatActivity {
                     updateList();                                                                       //shows all reminders
                     show = false;                                                                       //sets shows false for the next time that the app will be launched
                 }
+            }
+        });
+
+        showCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {        //this function manages the change of switch's state (on/off)
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(showCompleted.isChecked()){
+                    completedList();
+                }
+                else updateList();
             }
         });
 
@@ -115,14 +130,47 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateList(){ //function that shows all the reminders
         reminders.clear();
-        for(Reminder r : db.getAllReminders()) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline()); //shows only the title and the deadline
+        Date current = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String c = dateFormat.format(current);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(current);
+        String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
+        for(Reminder r : db.getAllReminders())
+        {
+            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(hour, r.getHour()) == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
+            if(AddActivity.compareDate(c,r.getDeadline()) == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
+        }
         adapter.notifyDataSetChanged();     //notifies the changes
     }
 
     public static void favouriteList(){ //function that shows favourite reminders
         reminders.clear();
+        Date current = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String c = dateFormat.format(current);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(current);
+        String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
         for(Reminder r : db.getAllReminders()){
             if(r.getFavourite() == 1) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());        //adds the info only if it is a favourite
+            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(AddActivity.compareDate(r.getDeadline(), c) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public static void completedList(){
+        reminders.clear();
+        Date current = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String c = dateFormat.format(current);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(current);
+        String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
+        for(Reminder r : db.getAllReminders()){
+            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(AddActivity.compareDate(r.getDeadline(), c) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
         }
         adapter.notifyDataSetChanged();
     }

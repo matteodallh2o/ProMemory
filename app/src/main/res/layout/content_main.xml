@@ -28,8 +28,18 @@
         android:layout_height="wrap_content"
         android:gravity="bottom"
         android:paddingLeft="15dp"
-        android:paddingTop="100sp"
+        android:paddingTop="90sp"
         android:text="Show favourites"
+        android:textAlignment="inherit"
+        android:textColorLink="@color/fragmentColor"
+        android:textStyle="bold"></Switch>
+    <Switch
+        android:id="@+id/switchCompleted"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:paddingLeft="15dp"
+        android:text="Show completed"
         android:textAlignment="inherit"
         android:textColorLink="@color/fragmentColor"
         android:textStyle="bold"></Switch>
