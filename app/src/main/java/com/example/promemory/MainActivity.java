@@ -31,8 +31,8 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    static ArrayAdapter<String> adapter;                //adapter for the list view
-    static List<String> reminders = new ArrayList<>();  //list for the management of the reminders' view
+    static ArrayAdapter<Reminder> adapter;                //adapter for the list view
+    static List<Reminder> reminders = new ArrayList<>();  //list for the management of the reminders' view
     static MySQLiteHelper db = null;                    //reminders database
     static Switch showFavourites;                       //switch that shows only favourite reminders
     static Switch showCompleted;
@@ -62,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         //setting the completed flag in all reminders
         setCompletedReminders();
 
-        final ListView list = (ListView) findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, reminders);   //setting the adapter
+        final ListView list = findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, reminders);   //setting the adapter
         list.setAdapter(adapter);       //matching the list with the adapter
         showFavourites = findViewById(R.id.switchFavourite);            //matching the switch object with the layout's Switch
         showCompleted = findViewById(R.id.switchCompleted);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent cont = new Intent(MainActivity.this, ReminderActivity.class);     //creation of an Intent
-                cont.putExtra("id", db.getAllReminders().get(position).getId());                 //putting the id of the selected reminder in an extra
+                cont.putExtra("id", reminders.get(position).getId());                 //putting the id of the selected reminder in an extra
                 startActivity(cont);                                                                   //starting the activity that shows the details of the reminder
                 ReminderActivity.setDatabase(db);                                                      //this function shares the database of this activity with the launched activity
             }
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         setCompletedReminders();
         for(Reminder r : db.getAllReminders())
         {
-            if(r.getCompleted() == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
+            if(r.getCompleted() == 0) reminders.add(r);
         }
         adapter.notifyDataSetChanged();     //notifies the changes
     }
@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
         reminders.clear();
         setCompletedReminders();
         for(Reminder r : db.getAllReminders()){
-            if(r.getFavourite() == 1 && r.getCompleted() == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());        //adds the info only if it is a favourite
-            else if(r.getFavourite() == 1 && r.getCompleted() == 1) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(r.getFavourite() == 1 && r.getCompleted() == 0) reminders.add(r);        //adds the info only if it is a favourite
+            else if(r.getFavourite() == 1 && r.getCompleted() == 1) reminders.add(r);
         }
         adapter.notifyDataSetChanged();
     }
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         reminders.clear();
         setCompletedReminders();
         for(Reminder r : db.getAllReminders()){
-            if(r.getCompleted() == 1)reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(r.getCompleted() == 1)reminders.add(r);
         }
         adapter.notifyDataSetChanged();
     }

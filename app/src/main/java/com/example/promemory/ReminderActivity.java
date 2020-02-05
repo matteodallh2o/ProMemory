@@ -12,6 +12,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.snackbar.Snackbar;
+
 //activity that shows the details of the selected reminder
 public class ReminderActivity extends AppCompatActivity {
 
@@ -50,14 +52,26 @@ public class ReminderActivity extends AppCompatActivity {
         if(database.getReminder(id).getFavourite() == 1) preferito.setChecked(true);
 
         Button modify = findViewById(R.id.btnModify);       //button that redirects you to the activity for the reminder's editing
+
         modify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ModifyActivity.class);  //creation of the intent
-                intent.putExtra("id", id);                                           //putting the id in an extra
-                ModifyActivity.setDatabase(database);                                      //shares the database with the next activity
-                startActivity(intent);                                                     //starts the next activity
-                finish();                                                                  //closes this activity
+                if(database.getReminder(id).getCompleted() == 1){
+                    Snackbar.make(findViewById(R.id.reminder_layout), "You can't modify a completed reminder", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) { }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                            .show();
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), ModifyActivity.class);  //creation of the intent
+                    intent.putExtra("id", id);                                           //putting the id in an extra
+                    ModifyActivity.setDatabase(database);                                      //shares the database with the next activity
+                    startActivity(intent);                                                     //starts the next activity
+                    finish();                                                                  //closes this activity
+                }
             }
         });
     }

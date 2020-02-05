@@ -77,15 +77,9 @@ public class Reminder { //class for the reminders
 
     @Override
     public String toString() {
-        return "Reminder{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                ", deadline='" + deadline + '\'' +
-                ", hour='" + hour + '\'' +
-                ", createdOn='" + createdOn + '\'' +
-                ", favourite=" + favourite +
-                ", completed=" + completed +
-                '}';
+        if(completed == 0)
+            return title + "\nExpires: " + deadline;
+        else
+            return title + "         Completed\nExpired: " + deadline;
     }
 }
