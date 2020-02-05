@@ -120,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
                                 int id = db.getAllReminders().get(position).getId();
                                 Reminder newReminder = db.getReminder(id);                     //match a reminder object with the selected reminder
                                 db.deleteReminder(newReminder);                                //deletes the reminder from the database
-                                updateList();                                                  //notifies the changes
+                                if(showCompleted.isChecked()) completedList();
+                                else if(showFavourites.isChecked()) favouriteList();
+                                else updateList();                                                  //notifies the changes
                             }
                         })
                         .setNegativeButton("NO",null)   //negative answer
