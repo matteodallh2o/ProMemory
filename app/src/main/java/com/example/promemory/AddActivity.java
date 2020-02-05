@@ -102,6 +102,7 @@ public class AddActivity extends AppCompatActivity {
                 calendar.setTime(current);
                 String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
 
+                //input controls
                 if(title.equals("")) {
                     Snackbar.make(findViewById(R.id.add_layout), "You have to put a title", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {
@@ -164,7 +165,7 @@ public class AddActivity extends AppCompatActivity {
         return true;
     }
 
-    public static int compareDate(String d1, String d2){
+    public static int compareDate(String d1, String d2){ //function that compares two dates
         String day1 = d1.substring(0,2);
         String day2 = d2.substring(0,2);
         String month1 = d1.substring(3,5);
@@ -179,13 +180,13 @@ public class AddActivity extends AppCompatActivity {
         return 1;
     }
 
-    public static int compareHour(String h1, String h2){
+    public static int compareHour(String h1, String h2){ //function that compares two hours
         int hour1;
         int minute1;
         int hour2;
         int minute2;
 
-        if (h1.charAt(1) == ':') {
+        if (h1.charAt(1) == ':') { //for example 1:54
             hour1 = Integer.parseInt(h1.substring(0, 1));
             minute1 = Integer.parseInt(h1.substring(2, 4));
         }

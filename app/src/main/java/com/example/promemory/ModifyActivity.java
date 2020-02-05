@@ -131,6 +131,7 @@ public class ModifyActivity extends AppCompatActivity {
                 calendar.setTime(current);
                 String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
 
+                //input controls
                 if(title.equals("")) {
                     Snackbar.make(findViewById(R.id.modify_layout), "You have to put a title", Snackbar.LENGTH_LONG)
                             .setAction("CLOSE", new View.OnClickListener() {

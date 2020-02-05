@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //setting the completed flag in all reminders
         setCompletedReminders();
 
         final ListView list = (ListView) findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
@@ -91,9 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         showCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {        //this function manages the change of switch's state (on/off)
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(showCompleted.isChecked()){
-                    completedList();
-                }
+                if(showCompleted.isChecked()) completedList();
+
                 else updateList();
             }
         });
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public static void updateList(){ //function that shows all the reminders
+    public static void updateList(){ //function that shows all the reminders that aren't completed
         reminders.clear();
         setCompletedReminders();
         for(Reminder r : db.getAllReminders())
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public static void completedList(){
+    public static void completedList(){ //function that shows only completed reminders
         reminders.clear();
         setCompletedReminders();
         for(Reminder r : db.getAllReminders()){
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
-    public static void setCompletedReminders(){
+    public static void setCompletedReminders(){ //function that sets the completed flag in all the reminders
         Date current = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String c = dateFormat.format(current);
@@ -167,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
         calendar.setTime(current);
         String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
         for(Reminder r : db.getAllReminders()){
-            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0){
+            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0){   //if it's the same day but the hour is earlier then it's completed
                 r.setCompleted(1);
                 db.updateReminder(r);
             }
-            if(AddActivity.compareDate(r.getDeadline(), c) == 0) {
+            if(AddActivity.compareDate(r.getDeadline(), c) == 0) {      //if today is earlier than the deadline then it's completed
                 r.setCompleted(1);
                 db.updateReminder(r);
             }

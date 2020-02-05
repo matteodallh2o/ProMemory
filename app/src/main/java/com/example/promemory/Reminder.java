@@ -13,7 +13,7 @@ public class Reminder { //class for the reminders
     private String hour;
     private String createdOn;   //date of the creation
     private int favourite;      //flag for the management of favourite reminders
-    private int completed;
+    private int completed;      //flag for the management of an expired reminder
 
     //constructors
     public Reminder(){}

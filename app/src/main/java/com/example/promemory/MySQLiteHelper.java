@@ -79,7 +79,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         values.put(KEY_HOUR, reminder.getHour()); // get hour
         values.put(KEY_CREATEDON, reminder.getCreatedOn()); // get created on
         values.put(KEY_FAVOURITE, reminder.getFavourite()); // get favourite flag
-        values.put(KEY_COMPLETED, reminder.getCompleted()); // get favourite flag
+        values.put(KEY_COMPLETED, reminder.getCompleted()); // get completed flag
 
 
         // 3. insert
@@ -177,7 +177,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         values.put("hour", reminder.getHour()); // get hour
         values.put("createdOn", reminder.getCreatedOn()); // get created on
         values.put("favourite", reminder.getFavourite()); // get favourite flag
-        values.put("completed", reminder.getCompleted()); // get favourite flag
+        values.put("completed", reminder.getCompleted()); // get completed flag
 
         // 3. updating row
         int i = db.update(TABLE_REMINDERS, //table
