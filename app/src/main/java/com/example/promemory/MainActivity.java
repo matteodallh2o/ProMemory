@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setCompletedReminders();
+
         final ListView list = (ListView) findViewById(R.id.listReminders);    //matching the list object with the layout's ListView
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, reminders);   //setting the adapter
         list.setAdapter(adapter);       //matching the list with the adapter
@@ -130,38 +132,34 @@ public class MainActivity extends AppCompatActivity {
 
     public static void updateList(){ //function that shows all the reminders
         reminders.clear();
-        Date current = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String c = dateFormat.format(current);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(current);
-        String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
+        setCompletedReminders();
         for(Reminder r : db.getAllReminders())
         {
-            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(hour, r.getHour()) == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
-            if(AddActivity.compareDate(c,r.getDeadline()) == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
+            if(r.getCompleted() == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());
         }
         adapter.notifyDataSetChanged();     //notifies the changes
     }
 
     public static void favouriteList(){ //function that shows favourite reminders
         reminders.clear();
-        Date current = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        String c = dateFormat.format(current);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(current);
-        String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
+        setCompletedReminders();
         for(Reminder r : db.getAllReminders()){
-            if(r.getFavourite() == 1) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());        //adds the info only if it is a favourite
-            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
-            if(AddActivity.compareDate(r.getDeadline(), c) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(r.getFavourite() == 1 && r.getCompleted() == 0) reminders.add(r.getTitle() + "\nExpires: " + r.getDeadline());        //adds the info only if it is a favourite
+            else if(r.getFavourite() == 1 && r.getCompleted() == 1) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
         }
         adapter.notifyDataSetChanged();
     }
 
     public static void completedList(){
         reminders.clear();
+        setCompletedReminders();
+        for(Reminder r : db.getAllReminders()){
+            if(r.getCompleted() == 1)reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public static void setCompletedReminders(){
         Date current = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String c = dateFormat.format(current);
@@ -169,9 +167,14 @@ public class MainActivity extends AppCompatActivity {
         calendar.setTime(current);
         String hour = calendar.get(Calendar.HOUR_OF_DAY) + ":" +  calendar.get(Calendar.MINUTE);
         for(Reminder r : db.getAllReminders()){
-            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
-            if(AddActivity.compareDate(r.getDeadline(), c) == 0) reminders.add(r.getTitle() + "         Completed\nExpired: " + r.getDeadline());
+            if(AddActivity.compareDate(r.getDeadline(), c) == -1 && AddActivity.compareHour(r.getHour(), hour) == 0){
+                r.setCompleted(1);
+                db.updateReminder(r);
+            }
+            if(AddActivity.compareDate(r.getDeadline(), c) == 0) {
+                r.setCompleted(1);
+                db.updateReminder(r);
+            }
         }
-        adapter.notifyDataSetChanged();
     }
 }

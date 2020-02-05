@@ -13,6 +13,7 @@ public class Reminder { //class for the reminders
     private String hour;
     private String createdOn;   //date of the creation
     private int favourite;      //flag for the management of favourite reminders
+    private int completed;
 
     //constructors
     public Reminder(){}
@@ -26,6 +27,7 @@ public class Reminder { //class for the reminders
         this.hour = ora;
         this.createdOn = dateFormat.format((date));
         this.favourite = preferito;
+        this.completed = 0;
     }
 
     //getters & setters
@@ -50,6 +52,7 @@ public class Reminder { //class for the reminders
     public int getFavourite() {
         return favourite;
     }
+    public int getCompleted() { return completed; }
 
     public void setId(int id) {
         this.id = id;
@@ -70,6 +73,7 @@ public class Reminder { //class for the reminders
     public void setFavourite(int favourite) {
         this.favourite = favourite;
     }
+    public void setCompleted(int completed) { this.completed = completed; }
 
     @Override
     public String toString() {
@@ -81,6 +85,7 @@ public class Reminder { //class for the reminders
                 ", hour='" + hour + '\'' +
                 ", createdOn='" + createdOn + '\'' +
                 ", favourite=" + favourite +
+                ", completed=" + completed +
                 '}';
     }
 }

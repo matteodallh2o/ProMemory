@@ -29,8 +29,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
     private static final String KEY_HOUR = "hour";
     private static final String KEY_CREATEDON = "createdOn";
     private static final String KEY_FAVOURITE = "favourite";
+    private static final String KEY_COMPLETED = "completed";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_TEXT, KEY_DEADLINE, KEY_HOUR, KEY_CREATEDON, KEY_FAVOURITE};
+    private static final String[] COLUMNS = {KEY_ID,KEY_TITLE,KEY_TEXT, KEY_DEADLINE, KEY_HOUR, KEY_CREATEDON, KEY_FAVOURITE, KEY_COMPLETED};
 
     public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,7 +47,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
                 "deadline TEXT," +
                 "hour TEXT," +
                 "createdOn TEXT," +
-                "favourite INTEGER)";
+                "favourite INTEGER," +
+                "completed INTEGER" +
+                ")";
 
         // create reminders table
         db.execSQL(CREATE_BOOK_TABLE);
@@ -76,6 +79,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         values.put(KEY_HOUR, reminder.getHour()); // get hour
         values.put(KEY_CREATEDON, reminder.getCreatedOn()); // get created on
         values.put(KEY_FAVOURITE, reminder.getFavourite()); // get favourite flag
+        values.put(KEY_COMPLETED, reminder.getCompleted()); // get favourite flag
+
 
         // 3. insert
         db.insert(TABLE_REMINDERS, // table
@@ -115,6 +120,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         reminder.setHour(cursor.getString(4));
         reminder.setCreatedOn(cursor.getString(5));
         reminder.setFavourite(Integer.parseInt(cursor.getString(6)));
+        reminder.setCompleted(Integer.parseInt(cursor.getString(7)));
 
         //log
         Log.d("getReminder("+id+")", reminder.toString());
@@ -145,6 +151,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
                 reminder.setHour(cursor.getString(4));
                 reminder.setCreatedOn(cursor.getString(5));
                 reminder.setFavourite(Integer.parseInt(cursor.getString(6)));
+                reminder.setCompleted(Integer.parseInt(cursor.getString(7)));
 
                 // Add reminder to reminders
                 reminders.add(reminder);
@@ -170,6 +177,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper implements Serializable {
         values.put("hour", reminder.getHour()); // get hour
         values.put("createdOn", reminder.getCreatedOn()); // get created on
         values.put("favourite", reminder.getFavourite()); // get favourite flag
+        values.put("completed", reminder.getCompleted()); // get favourite flag
 
         // 3. updating row
         int i = db.update(TABLE_REMINDERS, //table
